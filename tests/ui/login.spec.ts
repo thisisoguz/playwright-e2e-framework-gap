@@ -15,7 +15,11 @@ test("Login via phone number displays OTP field", async ({ page }) => {
 
   await page.mouse.click(20, 20); // Click outside to close any potential pop-ups 
 
-  await loginPage.enterPhoneNumber("5555555555");
+  if (!process.env.TEST_PHONE_NUMBER) {
+    throw new Error("TEST_PHONE_NUMBER environment variable is not set");
+  }
+
+  await loginPage.enterPhoneNumber(process.env.TEST_PHONE_NUMBER!);
   
   await loginPage.clickContinue();
   await expect(loginPage.otpText).toBeVisible();
