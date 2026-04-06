@@ -27,10 +27,9 @@ export class LoginPage {
 	}
 
 	async clickContinue() {
-		console.log("clickContinue içine girdi");	
 		await this.continueButton.highlight();
-		console.log("highlight işlemi tamamlandı");
+		await expect(this.continueButton).toBeVisible();
+		await expect(this.continueButton).toBeEnabled();
 		await this.continueButton.click({force: true});
-		console.log("click işlemi tamamlandı");
 	}
 }
