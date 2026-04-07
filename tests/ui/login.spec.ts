@@ -3,24 +3,44 @@ import { HeaderComponent } from "../../components/header.component";
 import { cookieBannerComponent } from "../../components/cookie-banner.component";
 import { LoginPage } from "../../pages/login.page";
 
-test("Login via phone number displays OTP field", async ({ page }) => {
-  const header = new HeaderComponent(page);
-  const cookieBanner = new cookieBannerComponent(page);
-  const loginPage = new LoginPage(page);
+test.describe("Auth - Login", () => {
 
-  await page.goto("https://gap.com.tr/");
-  await cookieBanner.acceptIfVisible();
-  await header.clickPersonLogo();
-  await expect(page).toHaveURL("https://gap.com.tr/users/auth/?next=/account/");
+  test("Login via phone number displays OTP field", async ({ page }) => {
+    const header = new HeaderComponent(page);
+    const cookieBanner = new cookieBannerComponent(page);
+    const loginPage = new LoginPage(page);
 
-  await page.mouse.click(20, 20); // Click outside to close any potential pop-ups 
+    await page.goto("https://gap.com.tr/");
+    await cookieBanner.acceptIfVisible();
+    await header.clickPersonLogo();
+    await expect(page).toHaveURL("https://gap.com.tr/users/auth/?next=/account/");
 
-  if (!process.env.TEST_PHONE_NUMBER) {
-    throw new Error("TEST_PHONE_NUMBER environment variable is not set");
-  }
+    await page.mouse.click(20, 20); // Click outside to close any potential pop-ups 
 
-  await loginPage.enterPhoneNumber(process.env.TEST_PHONE_NUMBER!);
-  
-  await loginPage.clickContinue();
-  await expect(loginPage.otpText).toBeVisible();
+    if (!process.env.TEST_PHONE_NUMBER) {
+      throw new Error("TEST_PHONE_NUMBER environment variable is not set");
+    }
+
+    await loginPage.enterPhoneNumber(process.env.TEST_PHONE_NUMBER!);
+
+    await loginPage.clickContinue();
+    await expect(loginPage.otpText).toBeVisible();
+  });
+
+  test("Login with invalid phone number shows error message", async ({ page }) => {
+    const header = new HeaderComponent(page);
+    const cookieBanner = new cookieBannerComponent(page);
+    const loginPage = new LoginPage(page);
+
+    await page.goto("https://gap.com.tr/");
+    await cookieBanner.acceptIfVisible();
+    await header.clickPersonLogo();
+    await expect(page).toHaveURL("https://gap.com.tr/users/auth/?next=/account/");
+
+    await page.mouse.click(20, 20); // Click outside to close any potential pop-ups
+
+    await loginPage.enterPhoneNumber("545555555");
+    await loginPage.clickContinue();
+    await expect(loginPage.phoneErrorText).toBeVisible();
+  });
 });

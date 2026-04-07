@@ -6,6 +6,7 @@ export class LoginPage {
 	readonly phoneInput: Locator;
 	readonly continueButton: Locator;
 	readonly otpText: Locator;
+	readonly phoneErrorText: Locator;
 
 	constructor(page: Page) { 
 		this.page = page;
@@ -13,6 +14,7 @@ export class LoginPage {
 		this.phoneInput = this.loginForm.locator("input[name='phone']");
 		this.continueButton = this.loginForm.locator('pz-button[type="submit"]').first();
 		this.otpText = page.getByRole("heading", { name: "SMS ONAY KODU" }	);
+		this.phoneErrorText = page.getByText("Lütfen girdiğiniz telefon numarasını kontrol ediniz veya üye olunuz.");
 	}
 
 	async navigate() {
