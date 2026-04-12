@@ -3,9 +3,9 @@ import { HeaderComponent } from "../../components/header.component";
 import { cookieBannerComponent } from "../../components/cookie-banner.component";
 import { LoginPage } from "../../pages/login.page";
 
-test.describe("Auth - Login", () => {
+test.describe("Home & Auth", () => {
 
-  test("Login via phone number displays OTP field", async ({ page }) => {
+  test("SMK-001A @smoke Login via phone number displays OTP field", async ({ page }) => {
     const header = new HeaderComponent(page);
     const cookieBanner = new cookieBannerComponent(page);
     const loginPage = new LoginPage(page);
@@ -27,7 +27,7 @@ test.describe("Auth - Login", () => {
     await expect(loginPage.otpText).toBeVisible();
   });
 
-  test("Login with invalid phone number shows error message", async ({ page }) => {
+  test("SMK-001B @smoke Login with invalid phone number shows error message", async ({ page }) => {
     const header = new HeaderComponent(page);
     const cookieBanner = new cookieBannerComponent(page);
     const loginPage = new LoginPage(page);

@@ -2,11 +2,11 @@ import { expect, Locator, Page } from "@playwright/test";
 
 export class HomePage {
   readonly page: Page;
-  readonly linkWomenCategory: Locator;
+  readonly womenCategory: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.linkWomenCategory = page.locator('a[href="/kadin/"]');
+    this.womenCategory = page.getByRole("navigation").getByRole("link", {name: "Kadın", exact: true});
   }
 
   async navigate() {
@@ -14,9 +14,15 @@ export class HomePage {
   }    
 
   async clickWomenCategory(): Promise<void> {
-    await expect(this.linkWomenCategory).toBeVisible();
-    await this.linkWomenCategory.highlight();
-    await this.linkWomenCategory.click();
-  }
+    await expect(this.womenCategory).toBeVisible();
+    await this.womenCategory.highlight();
+    await this.womenCategory.click();
 
+    if (/\/kadin\/?$/.test(this.page.url())) {
+      const firstWomenListingLink = this.page.locator('a[href^="/kadin-"]').first();
+      await expect(firstWomenListingLink).toBeVisible();
+      await firstWomenListingLink.highlight();
+      await firstWomenListingLink.click();
+    }
+  }
 }
