@@ -22,7 +22,7 @@ test.describe("Product Detail - Product Evaluation", () => {
     await expect(page).not.toHaveURL(listingUrl);
 
     const productTitle = page.locator("h1");
-    await expect(productTitle).toBeVisible;
+    await expect(productTitle).toBeVisible();
     await expect(productTitle).not.toHaveText("");
   });
 });
